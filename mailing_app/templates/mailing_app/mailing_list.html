@@ -1,0 +1,41 @@
+{% extends 'mailing_app/base.html' %}
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">Рассылки</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col" style="text-align: center">ID</th>
+                <th scope="col" style="text-align: center">Время рассылки</th>
+                <th scope="col" style="text-align: center">Периодичность</th>
+                <th scope="col" style="text-align: center">Статус рассылки</th>
+                <th scope="col" style="text-align: center">Сообщение</th>
+                <th scope="col" style="text-align: center"></th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider table-divider-primary">
+
+            {% for obj in object_list %}
+                 {% if obj.user == user or perms.mailing_app.view_mailing %}
+                <tr>
+                    <th class="text-center">{{ obj.pk }}</th>
+                    <td class="text-center">{{ obj.mailing_time }}</td>
+                    <td class="text-center">{{ obj.get_frequency_display }}</td>
+                    <td class="text-center">{{ obj.get_mailing_status_display }}</td>
+                    <td class="text-center">{{ obj.message }}</td>
+                    <td class="text-center"><a href="{% url 'mailing_app:mailing_detail' obj.pk %}"
+                                               class="btn btn-dark">Перейти к рассылке</a>
+                    </td>
+
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="container" style="text-align: center">
+
+            <a href="{% url 'mailing_app:mailing_create' %}" class="btn btn-outline-dark btn-lg my-3"
+               style="border-radius: 25px; padding: 10px 25px; font-size: 20px; font-weight: bold;">Создать рассылку</a>
+        </div>
+    </div>
+{% endblock %}

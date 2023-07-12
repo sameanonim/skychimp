@@ -1,0 +1,35 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card text-center">
+            <div class="card-header">
+                {{ object.message }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ object.mailing_time }}</h5>
+                <p class="card-text">Периодичность рассылки: {{ object.get_frequency_display }}</p>
+                <p class="card-text">Получатели:
+                    {% for obj in object.clients.all %}
+                        {{ obj.full_name }}
+                    {% endfor %}
+
+                </p>
+                {% if object.user == user or user.is_superuser %}
+                <a href="{% url 'mailing_app:mailing_update' object.pk %}" class="btn btn-warning">Изменить</a>
+                <a href="{% url 'mailing_app:mailing_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+                {% endif %}
+                {% if perms.mailing_app.set_mailing_status or user.is_superuser %}
+                        <a class="btn btn-info" href="{% url 'mailing_app:set_mailing_status' object.pk %}">Отключить рассылку</a>
+                        {% endif %}
+                <br><br>
+                <a href="{% url 'mailing_app:mailing_list' %}" class="btn btn-secondary">Все рассылки</a>
+            </div>
+            <div class="card-footer text-muted">
+                Статус рассылки: {{ object.get_mailing_status_display }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

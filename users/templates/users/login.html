@@ -1,0 +1,31 @@
+{% extends 'mailing_app/base.html' %}
+
+
+{% block content %}
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-8 col-lg-12">
+                <div class="card shadow-sm my-4">
+                    <div class="card-header text-center">
+                        <h4 class="card-title">Пользователь</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form.as_p }}
+                            </div>
+                            <a class="text-muted" href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+                            <a class="text-primary" href="{% url 'users:register' %}">Зарегистрироваться</a>
+                            <div class="form-group text-center">
+                                <a href="{% url 'mailing_app:mailing_list' %}"
+                                   class="btn btn-secondary mt-3">Отменить</a>
+                                <button class="btn btn-success mt-3" type="submit">Войти</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
